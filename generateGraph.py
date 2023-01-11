@@ -5,20 +5,27 @@ from sentence_transformers import SentenceTransformer
 import networkx as nx
 
 def generateGraph(articles):
-    nodes = len(articles)
-    graph = nx.Graph()
-    for i in range(nodes):
-        graph.add_node(i)
-
     model = SentenceTransformer('all-MiniLM-L6-v2')
 
-    for i in range(nodes):
-        for j in range(i, nodes):
-            vectors = model.encode([articles[i]['ABSTRACT'], articles[j]['ABSTRACT']])
-            similarity = 1 / (1 + np.linalg.norm(vectors[0] - vectors[1])) 
+    nodes = range(len(articles))
+    graph = nx.Graph()
+    graph.add_nodes_from(nodes)
+    embeddings = {i: model.encode(articles[i]['ABSTRACT'])[0] for i in range(len(articles))}
+    nx.set_node_attributes(graph, embeddings, 'Embedding')
+
+    embeddings = nx.get_node_attributes(graph, 'Embedding')
+
+    for i in range(len(articles)):
+        embeddingI = embeddings[i]
+        for j in range(i + 1, len(articles)):
+            embeddingJ = embeddings[j]
+            similarity = 1 / (1 + np.linalg.norm(embeddingI - embeddingJ))
 
             if similarity > 0.43:
                 graph.add_edge(i, j)
+
+    nx.set_node_attributes(graph, "", 'Embedding')
+
 
     return graph
 
