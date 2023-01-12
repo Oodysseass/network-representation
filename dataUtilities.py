@@ -36,3 +36,19 @@ def sampling(size):
     print("Total size of sample:", size)
     
     return articles
+
+def makeSets(articles):
+    topics = ['Computer Science', 'Physics', 'Mathematics', \
+        'Statistics', 'Quantitative Biology', 'Quantitative Finance']
+
+    sets = [set() for _ in range(len(topics))]
+
+    for article in articles:
+        for i, topic in enumerate(topics):
+            if article[topic] == '1':
+                sets[i].add(article['ID'])
+
+    return sets
+
+def jaccard(set1, set2):
+    return jaccard_similarity_score(set1, set2)
