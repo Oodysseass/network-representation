@@ -17,7 +17,7 @@ def generateGraph(articles):
             embeddingJ = embeddings[j]
 
             similarity = 1 / (1 + np.linalg.norm(embeddingI - embeddingJ))
-            if similarity > 0.43:
+            if similarity > 0.46:
                 graph.add_edge(i, j)
 
     return graph
