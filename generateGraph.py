@@ -40,10 +40,16 @@ def generateGraph(articles):
 def sampling(size):
     with open('train.csv', 'r') as trainFile:
         reader = csv.DictReader(trainFile)
-
         rows = list(reader)
 
-    percentages = {
+    if size == 20000:
+        return rows
+
+    while size % 6 != 0:
+        size = size + 1
+
+    sample = size / 6
+    sampled = {
         'Computer Science': 0,
         'Physics': 0,
         'Mathematics': 0,
@@ -52,32 +58,17 @@ def sampling(size):
         'Quantitative Finance': 0
     }
 
-    for article in rows:
-        for key in article:
-            if key in ['Computer Science', 'Physics', 'Mathematics', 'Statistics', 'Quantitative Biology', 'Quantitative Finance'] and article[key] == '1':
-                percentages[key] = percentages[key] + 1
-                break
-
-    sample = size
-    for key in percentages:
-        percentages[key] = math.ceil((percentages[key] / 20000) * sample)
-
-    nodes = 0
-    for key in percentages:
-        nodes = nodes + percentages[key]
-
-    print("Total number of sample:", nodes)
-    print(percentages)
-
-    articles = list(range(nodes))
+    articles = list(range(size))
     j = 0
     for article in rows:
         for key in article:
             if key in ['Computer Science', 'Physics', 'Mathematics', 'Statistics', 'Quantitative Biology', 'Quantitative Finance'] and article[key] == '1':
-                if percentages[key] > 0:
+                if sampled[key] < sample:
                     articles[j] = article 
                     j = j + 1
-                    percentages[key] = percentages[key] - 1
+                    sampled[key] = sampled[key] + 1
                 break
+
+    print("Total size of sample:", size)
     
     return articles
