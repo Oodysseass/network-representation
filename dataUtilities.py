@@ -6,6 +6,7 @@ def sampling(size):
         rows = list(reader)
 
     if size == 20000:
+        print("Total size of sample:", len(rows))
         return rows
 
     while size % 6 != 0:
