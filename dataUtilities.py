@@ -47,15 +47,16 @@ def makeSets(articles):
         for i, topic in enumerate(topics):
             if article[topic] == '1':
                 sets[i].add(int (article['ID']))
+                break
 
     return sets
 
 def jaccard(list1, list2):
     sum = 0
-    for i in range(len(list1)):
+    for setI in list1:
         max = -1
-        for j in range(len(list2)):
-            jaccardScore = len(list1[i].intersection(list2[j])) / len(list1[i].union(list2[j]))
+        for setJ in list2:
+            jaccardScore = len(setI.intersection(setJ)) / len(setI.union(setJ))
             if  jaccardScore > max:
                 max = jaccardScore
         sum = sum + max
