@@ -9,7 +9,8 @@ def generateGraph(articles):
     graph = nx.Graph()
     graph.add_nodes_from(nodes)
 
-    embeddings = {i: model.encode(articles[i]['ABSTRACT']) for i in range(len(articles))}
+    embeddings = list(range(len(articles)))
+    embeddings = [model.encode(article['ABSTRACT']) for article in articles]
 
     for i in range(len(articles)):
         embeddingI = embeddings[i]
