@@ -2,7 +2,6 @@ import os
 from dataUtilities import sampling, makeSets, jaccard
 import networkx as nx
 from community import community_louvain
-import matplotlib.pyplot as plt
 
 
 size = 1000
