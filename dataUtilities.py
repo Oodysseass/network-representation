@@ -1,4 +1,6 @@
 import csv
+import numpy as np
+from scipy.optimize import linear_sum_assignment
 
 def sampling(size):
     with open('train.csv', 'r') as trainFile:
@@ -61,3 +63,30 @@ def jaccard(list1, list2):
                 max = jaccardScore
         sum = sum + max
     return sum / len(list1)
+
+def basicClusteringMatrix(clustering):
+    sortedClustering = sorted(clustering, key=lambda x: min(x))
+
+    elements = set()
+    for cluster in sortedClustering:
+        elements.update(cluster)
+
+    elements = list(sorted(elements))
+    bcm = [[int(i in cluster) for i in elements] for cluster in sortedClustering]
+
+    return np.array(bcm)
+
+def clusteringDistance(trueClustering, predictedClustering):
+    trueBCM = basicClusteringMatrix(trueClustering)
+    predictedBCM = basicClusteringMatrix(predictedClustering)
+    k1, n = trueBCM.shape
+    k2, _ = predictedBCM.shape
+    k = min(k1, k2)
+
+    C = np.zeros((k, k))
+    for i in range(k):
+        for j in range(k):
+            C[i, j] = np.sum(np.abs(trueBCM[i] - predictedBCM[j]))
+
+    rowInd, colInd = linear_sum_assignment(C)
+    return np.sum(C[rowInd, colInd])

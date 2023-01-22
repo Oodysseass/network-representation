@@ -1,5 +1,5 @@
 import os
-from dataUtilities import sampling, makeSets, jaccard
+from dataUtilities import sampling, makeSets, jaccard, clusteringDistance
 import networkx as nx
 from community import community_louvain
 
@@ -24,3 +24,4 @@ for commID in range(numCommunities):
 trueSets = makeSets(articles)
 
 print(jaccard(trueSets, commSets))
+print(clusteringDistance(trueSets, commSets))
