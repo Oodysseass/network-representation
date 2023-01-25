@@ -88,5 +88,15 @@ def clusteringDistance(trueClustering, predictedClustering):
         for j in range(k):
             C[i, j] = np.sum(np.abs(trueBCM[i] - predictedBCM[j]))
 
-    rowInd, colInd = linear_sum_assignment(C)
-    return np.sum(C[rowInd, colInd])
+    _, p = linear_sum_assignment(C)
+    S = predictedBCM[p, :]
+
+    return len(diffColumns(trueBCM, S))
+
+def diffColumns(arr1, arr2):
+    arr1 = arr1[:arr2.shape[0], :]
+
+    diff = np.not_equal(arr1, arr2)
+    diffCols = np.any(diff, axis = 0)
+
+    return np.where(diffCols)[0]
