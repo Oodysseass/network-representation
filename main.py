@@ -25,4 +25,4 @@ trueSets = makeSets(articles)
 distance = clusteringDistance(trueSets, commSets)
 
 print("Clustering Distance:", distance)
-print("Moves / Nodes:", distance / len(articles))
+print("Distance / Nodes:", distance / len(articles))

@@ -25,13 +25,11 @@ def sampling(size):
     }
 
     articles = []
-    j = 0
     for article in rows:
         for key in article:
             if key in ['Computer Science', 'Physics', 'Mathematics', 'Statistics', 'Quantitative Biology', 'Quantitative Finance'] and article[key] == '1':
                 if sampled[key] < sample:
                     articles.append(article)
-                    j = j + 1
                     sampled[key] = sampled[key] + 1
                 break
 
