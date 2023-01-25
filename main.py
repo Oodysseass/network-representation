@@ -1,10 +1,10 @@
 import os
-from dataUtilities import sampling, makeSets, jaccard, clusteringDistance
+from dataUtilities import sampling, makeSets, clusteringDistance
 import networkx as nx
 from community import community_louvain
 
 
-size = 1000
+size = 5000
 articles = sampling(size)
 if os.path.isfile("graph.gml"):
     graph = nx.read_gml("graph.gml")
@@ -22,6 +22,7 @@ for commID in range(numCommunities):
     commSets[commID] = set([int (articles[int (article)]['ID']) for article in nodes])
 
 trueSets = makeSets(articles)
+distance = clusteringDistance(trueSets, commSets)
 
-print(jaccard(trueSets, commSets))
-print(clusteringDistance(trueSets, commSets))
+print("Clustering Distance:", distance)
+print("Moves / Nodes:", distance / len(articles))
