@@ -3,15 +3,18 @@ import numpy as np
 from scipy.optimize import linear_sum_assignment
 
 
+# samples train.csv uniformly
 def sampling(size):
     with open('train.csv', 'r') as trainFile:
         reader = csv.DictReader(trainFile)
         rows = list(reader)
 
+    # return all the articles
     if size == 20000:
         print("Total size of sample:", len(rows))
         return rows
 
+    # make size divisible by 6
     while size % 6 != 0:
         size = size + 1
 
@@ -25,6 +28,7 @@ def sampling(size):
         'Quantitative Finance': 0
     }
 
+    # sample articles and keep track of the amount
     articles = []
     for article in rows:
         for key in article:
@@ -39,6 +43,7 @@ def sampling(size):
 
     return articles
 
+# returns list of sets of the true clustering
 def makeSets(articles):
     topics = ['Computer Science', 'Physics', 'Mathematics', \
         'Statistics', 'Quantitative Biology', 'Quantitative Finance']
@@ -53,17 +58,8 @@ def makeSets(articles):
 
     return sets
 
-def jaccard(list1, list2):
-    sum = 0
-    for setI in list1:
-        max = -1
-        for setJ in list2:
-            jaccardScore = len(setI.intersection(setJ)) / len(setI.union(setJ))
-            if  jaccardScore > max:
-                max = jaccardScore
-        sum = sum + max
-    return sum / len(list1)
-
+# constructs a basic clustering matrix from a list of sets
+# that represents a clustering
 def basicClusteringMatrix(clustering):
     sortedClustering = sorted(clustering, key=lambda x: min(x))
 
@@ -76,6 +72,7 @@ def basicClusteringMatrix(clustering):
 
     return np.array(bcm)
 
+# calculates clustering distance from basic clustering matrices
 def clusteringDistance(trueClustering, predictedClustering):
     trueBCM = basicClusteringMatrix(trueClustering)
     predictedBCM = basicClusteringMatrix(predictedClustering)
@@ -93,6 +90,7 @@ def clusteringDistance(trueClustering, predictedClustering):
 
     return len(diffColumns(trueBCM, S))
 
+# finds columns of two arrays with different elements
 def diffColumns(arr1, arr2):
     arr1 = arr1[:arr2.shape[0], :]
 
