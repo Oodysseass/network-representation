@@ -2,6 +2,7 @@ import csv
 import numpy as np
 from scipy.optimize import linear_sum_assignment
 
+
 def sampling(size):
     with open('train.csv', 'r') as trainFile:
         reader = csv.DictReader(trainFile)
@@ -33,8 +34,9 @@ def sampling(size):
                     sampled[key] = sampled[key] + 1
                 break
 
-    print("Total size of sample:", size)
-    
+    print("Total size of sample:", len(articles))
+    print(sampled)
+
     return articles
 
 def makeSets(articles):
