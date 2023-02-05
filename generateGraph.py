@@ -2,6 +2,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 import networkx as nx
 
+
 def generateGraph(articles):
     model = SentenceTransformer('all-MiniLM-L6-v2')
 
@@ -19,6 +20,6 @@ def generateGraph(articles):
 
             similarity = 1 / (1 + np.linalg.norm(embeddingI - embeddingJ))
             if similarity > 0.46:
-                graph.add_edge(i, j)
+                graph.add_edge(i, j, weight = 1 / similarity)
 
     return graph
