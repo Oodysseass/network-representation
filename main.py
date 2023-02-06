@@ -1,16 +1,22 @@
-import os
+import os, sys
 from dataUtilities import sampling, makeSets, clusteringDistance
 import networkx as nx
 from community import community_louvain
 
 
-size = 1254
+if len(sys.argv) > 1:
+    size = int(sys.argv[1])
+else:
+    size = 1254
 articles = sampling(size)
 
 # import graph if it exists, otherwise generate it
+read = False
 if os.path.isfile("graph.gml"):
     graph = nx.read_gml("graph.gml")
-else:
+    if len(articles) == graph.number_of_nodes():
+        read = True
+if not read:
     from generateGraph import generateGraph
     graph = generateGraph(articles)
     nx.write_gml(graph, "graph.gml")
