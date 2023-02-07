@@ -1,5 +1,6 @@
 import os, sys
 from dataUtilities import sampling, makeSets, clusteringDistance
+from generateGraph import trueGraph
 import networkx as nx
 from community import community_louvain
 
@@ -37,3 +38,6 @@ distance = clusteringDistance(trueSets, commSets)
 
 print("Clustering Distance:", distance)
 print("Distance / Nodes:", distance / len(articles))
+
+# generate gml of true graph for visualization in gephi
+nx.write_gml(trueGraph(trueSets), "true-graph.gml")
